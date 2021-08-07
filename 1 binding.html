@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="vuejs.js"></script>
+
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="app1">
+        <a v-bind:href="link"> {{ link }}</a>
+        <br>
+        <input type="text" v-bind:value="link">
+        <br>
+        <p>
+            <input type="text" v-model="nome">
+            Response: {{ nome }}
+        </p>
+    </div>
+
+    <script>
+
+        // #app1
+        new Vue({
+            el: '#app1',
+            data: {
+                nome: 'Maria',
+                link: 'http://google.com'
+            },
+            watch: {
+                nome(novoValor){
+                    console.log(novoValor);
+                }
+            }
+        })
+
+
+    </script>
+
+</body>
+</html>

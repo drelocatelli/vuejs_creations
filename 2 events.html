@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="vuejs.js"></script>
+
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="app">
+        <p>{{ contador }}</p>
+        <button v-on:click="add" v-show="contador < 10">Adicionar</button>
+        <button @click="contador -= 1" v-show="contador > 0">remover</button>
+
+        <p @mousemove="atualizarPosicao">
+            Coordenadas: {{ x }}, {{ y }}
+
+            <span @mousemove.stop>Aqui não</span>
+        </p>
+
+        <input type="text" @keyup.enter="msg">
+        {{ mensagem }}
+    </div>
+
+    <script>
+
+        new Vue({
+            el: '#app',
+            data: {
+                x: 0,
+                y: 0,
+                contador: 0,
+                mensagem: ''
+            },
+            methods: {
+                add(){
+                    this.contador++
+                },
+                atualizarPosicao(e){
+                    this.x = e.clientX
+                    this.y = e.clientY
+                },
+                msg(e){
+                    this.mensagem = e.target.value
+                }
+            }
+        })
+        
+    </script>
+
+</body>
+</html>
