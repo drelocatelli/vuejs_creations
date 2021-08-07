@@ -17,9 +17,9 @@
         }
     </style>
 
-    <div id="app" class="basic" @click="aplicarCor = !aplicarCor"
-    :class="{'vermelho': aplicarCor}">
-        Teste
+    <div id="app" class="basic">
+        <span v-on:click="[isClicked(), aplicarCor = !aplicarCor]"
+        :class="{'vermelho': aplicarCor}">{{Click}}</span>
     </div>
 
     <script>
@@ -27,7 +27,17 @@
         new Vue({
             el: '#app',
             data: {
-                aplicarCor: false
+                aplicarCor: false,
+                Click: 'Click'
+            },
+            methods: {
+                isClicked(e){
+                    if(this.aplicarCor){
+                        this.Click = 'Click'
+                    }else{
+                        this.Click = 'Clicked'
+                    }
+                }
             }
         })
         
