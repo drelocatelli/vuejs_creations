@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="vue_axios.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+
+    <style>
+        *{font-family:sans-serif;}
+        .list li{
+            list-style: none;
+            display:block;
+            margin-bottom:12px;
+        }
+    </style>
+
+    <div id="app">
+        <h1>Public Api</h1>
+        <input type="text" name="title" @keyup.enter="request" placeholder="search by title">
+
+        <p>
+            {{ response }}
+            <br>
+            <span v-if="count != ''">Results: {{ count }}</span>
+        </p>
+
+        <div class="list">
+            <li v-for="(detail, i) in details">
+                Title: {{ detail.API }}<br>
+                Description: {{ detail.Description }}<br>
+                Link: <a v-bind:href="detail.Link" target="_blank">{{ detail.Link }}</a><br>
+                Auth required: {{ (detail.Auth == '') ? 'None' : detail.Auth }}
+            </li>
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el : '#app',
+            data : {
+                response: '',
+                count: '',
+                details: ''
+            },
+            methods: {
+                request(e){
+                    
+                    axios.get(`https://api.publicapis.org/entries?title=${e.target.value}`)
+                    .then(response => {
+                        this.response = `Search request: ${e.target.value}`
+                    this.count = parseInt(response.data.count);
+                    this.details = response.data.entries
+                    });
+                }
+            }
+        });
+    </script>
+    
+</body>
+</html>
