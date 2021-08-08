@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="vue_axios.min.js"></script>
+    <title>Dev Jobs</title>
+</head>
+<body>
+
+    <div id="app" >
+        <h1>Dev Jobs</h1>
+        <button v-on:click="getJob">carregar jobs</button><br>
+        <a href="https://github.com/frontendbr/vagas/issues">github</a><br><br>
+        <p v-if="count > 0">{{ count }} resultados</p>
+
+        <div class="list" v-if="details != ''">
+            <table border="1">
+                <tr>
+                    <th>Titulo</th>
+                    <th>Descrição da vaga</th>
+                    <th>Aberto em:</th>
+
+                </tr>
+                <tr v-for="(detail, i) in details">
+                    <td> 
+                        <a :href="detail.html_url" target="_blank">{{ detail.title }}</a>
+                        <br><br>
+                        <span v-for="(label, i) in detail.labels">
+                            {{ label.name + ';' }}
+                        </span>
+                     </td>
+                    <td style="white-space:pre-line;">{{ detail.body }}</td>
+                    <td> {{ detail.created_at }} </td>
+                    <td> <a :href="detail.html_url" target="_blank">ver vaga</a> </td>
+                </tr>
+                
+            </table>
+            
+        </div>
+        
+    </div>
+    
+    <script>
+        
+        new Vue({
+            el: '#app',
+            data: {
+                response: '',
+                count: '',
+                details: '',
+            },
+            methods: {
+                getJob(e){
+                    this.response = e.target.value
+
+                    axios.get('https://api.github.com/repos/frontendbr/vagas/issues')
+                    .then(res => {
+                        res = res.data
+                        this.details = res
+                        this.count = res.length
+                    });
+                    
+                }
+            }
+        });
+
+        
+    </script>
+
+    <style>
+        *{font-family:sans-serif; text-align: center;}
+        .list li{
+            list-style: none;
+            display:block;
+            margin-bottom:12px;
+        }
+
+        .list td{
+            vertical-align:top;
+            padding: 10px;
+            padding-bottom: 5rem;
+        }
+    </style>
+    
+</body>
+</html>
