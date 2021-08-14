@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../vue_axios.min.js"></script>
+    <title>Pokemão</title>
+</head>
+<body>
+
+    <div id="app">
+        <h3>Pokemon Sprites</h3>
+
+        <input type="text" @keypress="showKey" v-on:keyup.enter="search" placeholder="nome" v-on:click="$event.target.select()" autofocus>
+        <br><br>
+        {{ 'Key ' + key }}
+        <br>
+        <span v-if="searched != ''">
+            
+            busca por: {{ searched }}
+        </span>
+        <br><br>
+        <div class="result" v-if="searched != '' && result != ''">
+            <p v-if="result != undefined" >
+                <span v-for="(sprite, i) in sprites">
+                    <img :src="sprite" height="180px" v-on:click="getName(sprite)">
+                </span>
+            </p>
+            <p v-else style="color:blue;">
+                Not found.
+            </p>
+        </div>
+        
+    </div>
+    
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                searched: '',
+                result: '',
+                sprites: '',
+                key: ''
+            },
+            methods: {
+                search(el){
+                    this.searched = el.target.value.toLowerCase();
+                    if(this.searched == 'cage'){
+                        this.sprites = ["https://www.networthlists.com/wp-content/uploads/2020/09/Nicolas-Cage-Net-Worth.jpg"]
+                    }else{
+
+                        let url = `https://pokeapi.co/api/v2/pokemon/${this.searched}`
+
+                        axios.get(url)
+                        .then(response => response)
+                        .then(response => {
+                            this.result = response.data
+                            let about  = this.result.forms[0].url
+
+                            // about pokemon
+                            axios.get(about)
+                            .then(response => {
+                                this.sprites = response.data.sprites
+                            })
+                        }).catch(err => {
+                            this.result = undefined
+                        })
+                    }
+                },
+                getName(item){
+                    alert(item)
+                },
+                showKey(e){
+                    this.key = e.keyCode
+                }
+            }
+        })
+    </script>
+</body>
+</html>
+
+<style>
+    body{
+        background-color:#edf5a6;
+    }
+    *{font-family:sans-serif;}
+    #app{
+        text-align:center;
+        margin-top:10vh;
+    }
+    input{ padding:8px; }
+</style>

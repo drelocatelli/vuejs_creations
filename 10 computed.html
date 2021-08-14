@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="vuejs.js"></script>
+
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="app">
+        <h4>Adicionar pacientes</h4>
+        <span>Nome:</span> <input type="text" id="nome"><br><br>
+        <span>Idade:</span> <input type="text" id="idade"><br><br>
+        <span>Plano:</span> <input type="text" id="plano"><br><br>
+        <button @click="adicionarPaciente">Adicionar</button>
+        <hr>
+
+        <h4>Ultimo paciente</h4>
+        <p v-if="pacientes.length > 0">
+            Paciente {{pacientes[pacientes.length - 1].nome}},
+            Idade {{pacientes[pacientes.length - 1].idade}},
+            Plano {{pacientes[pacientes.length - 1].plano}}
+        </p>
+        <hr>
+
+        <h4>Pacientes cadastrados</h4>
+        <p v-for="p in pacientes">{{p.nome}}</p>
+    </div>
+
+    <script>
+
+        new Vue({
+           el: '#app',
+           data: {
+            pacientes: []
+           },
+           methods: {
+               adicionarPaciente(){
+                    this.pacientes.push({
+                        nome: nome.value,
+                        idade: idade.value,
+                        plano: plano.value
+                    })
+
+                nome.value = ''; idade.value = ''; plano.value = ''
+               }
+           }
+           
+        })
+        
+    </script>
+
+</body>
+</html>
+
+<style>
+    *{font-family: sans-serif;}
+    input{padding:8px;}
+</style>
